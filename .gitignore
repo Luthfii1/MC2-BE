@@ -142,3 +142,4 @@ dist
 credentials.json
 
 uploads
+.vercel
