@@ -1,14 +1,15 @@
 {
   "compilerOptions": {
     "outDir": "./dist",
-    "rootDir": "./src",
+    "sourceMap": true,
+    "rootDir": "./",
     "module": "commonjs",
-    "target": "es6",
+    "target": "ESNext",
     "strict": true,
     "esModuleInterop": true,
+    "noImplicitAny": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist"]
+  "include": ["./api/*.ts"]
 }

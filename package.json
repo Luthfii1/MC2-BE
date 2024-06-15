@@ -6,7 +6,9 @@
   "scripts": {
     "build": "tsc",
     "dev": "nodemon ./src/index.ts",
-    "start": "node ./dist/index.js"
+    "start": "ts-node ./dist/index.js",
+    "lint": "eslint --fix src test",
+    "vercel-build": "echo hello"
   },
   "keywords": [],
   "author": "",
