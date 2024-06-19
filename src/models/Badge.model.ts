@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const badge = new mongoose.Schema({
+const badgeSchema = new mongoose.Schema({
   title: {
     type: String,
     required: true,
@@ -14,3 +14,6 @@ const badge = new mongoose.Schema({
     require: true,
   },
 });
+
+const Badge = mongoose.model("Badge", badgeSchema);
+exports.module = { Badge };
