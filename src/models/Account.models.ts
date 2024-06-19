@@ -17,7 +17,7 @@ const accountSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  partnerID: {
+  coupleID: {
     type: String,
     required: false,
   },
@@ -25,6 +25,17 @@ const accountSchema = new mongoose.Schema({
     type: String,
     required: true,
     enum: ["MALE", "FEMALE", "UNKNOWN"],
+  },
+  loveLanguage: {
+    type: String,
+    required: false,
+    enum: [
+      "WORDS_OF_AFFIRMATION",
+      "ACTS_OF_SERVICE",
+      "RECEIVING_GIFTS",
+      "QUALITY_TIME",
+      "PHYSICAL_TOUCH",
+    ],
   },
 });
 
