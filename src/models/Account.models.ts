@@ -17,7 +17,7 @@ const accountSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  coupleID: {
+  partnerID: {
     type: String,
     required: false,
   },
@@ -36,6 +36,10 @@ const accountSchema = new mongoose.Schema({
       "QUALITY_TIME",
       "PHYSICAL_TOUCH",
     ],
+  },
+  invitationCode: {
+    type: String,
+    required: false,
   },
 });
 

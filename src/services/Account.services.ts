@@ -8,6 +8,9 @@ exports.updateAccount = async function (body: any, params: any) {
   const { id } = params;
   const { ...data } = body;
 
+  console.log("data", data);
+  console.log("data.inputCode", data.inputCode);
+
   checkRequiredField(id, "ID");
 
   const accountData = await Account.findById(id);
@@ -15,6 +18,7 @@ exports.updateAccount = async function (body: any, params: any) {
     throw new Error("Account not found");
   }
 
+  // if change email
   if (data.email !== accountData.email) {
     checkDuplicateValue(
       data.email,
@@ -23,11 +27,22 @@ exports.updateAccount = async function (body: any, params: any) {
     );
   }
 
-  if (data.partnerID && data.partnerID !== accountData.partnerID) {
+  // if change partnerID
+  if (data.inputCode && data.inputCode !== accountData.invitationCode) {
+    console.log("masuk sini", data.inputCode);
+
     // if remove partner
-    if (data.partnerID === null) {
+    if (data.inputCode === null) {
       await Account.findByIdAndUpdate(
-        data.partnerID,
+        accountData.partnerID,
+        { partnerID: null },
+        {
+          new: true,
+        }
+      );
+
+      await Account.findByIdAndUpdate(
+        id,
         { partnerID: null },
         {
           new: true,
@@ -35,7 +50,9 @@ exports.updateAccount = async function (body: any, params: any) {
       );
     } else {
       // if change partner check the partner of partner is not has partner awokwowkowk
-      const checkPartner = await Account.findOne({ _id: data.partnerID });
+      const checkPartner = await Account.findOne({
+        invitationCode: data.inputCode,
+      });
       if (!checkPartner) {
         throw new Error("PartnerID not found");
       }
@@ -46,8 +63,17 @@ exports.updateAccount = async function (body: any, params: any) {
 
       // update partnerID of partner
       await Account.findByIdAndUpdate(
-        data.partnerID,
+        checkPartner._id,
         { partnerID: id },
+        {
+          new: true,
+        }
+      );
+
+      // update partnerID of account
+      await Account.findByIdAndUpdate(
+        id,
+        { partnerID: checkPartner._id },
         {
           new: true,
         }
