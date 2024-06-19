@@ -5,6 +5,8 @@ import {
   checkRequiredField,
   checkDuplicateValue,
 } from "../utils/CheckFieldAndValue";
+// import accountsData from "../models/dummyData";
+require("dotenv").config();
 
 exports.getAllAccounts = async function () {
   // get all accounts from database
@@ -54,4 +56,32 @@ exports.register = async function (body: any) {
   }
 
   return await Account.find({});
+};
+
+exports.login = async function (body: any) {
+  const { email, password } = body;
+  checkRequiredField(email, "Email");
+  checkRequiredField(password, "Password");
+
+  // const account = accountsData.find((account) => account.email === email);
+  const account = await Account.findOne({ email: email });
+  if (!account) {
+    throw new Error("Email account is not found");
+  }
+
+  // const validPassword = account.password === password;
+  const validPassword = await bcrypt.compare(password, account.password);
+  if (!validPassword) {
+    throw new Error("Password is not correct");
+  }
+
+  const token = jwt.sign(
+    { _id: account._id },
+    process.env.TOKEN_SECRET as string
+  );
+  if (!token) {
+    throw new Error("Token is not generated, please relogin");
+  }
+
+  return token;
 };
