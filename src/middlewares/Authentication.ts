@@ -17,10 +17,8 @@ export const authenticateToken = async (
   const _id = decoded._id;
 
   //   const account = accountsData.find((account: any) => account._id === _id);
-  const account = await Account.findOne({ _id: _id });
+  const account = await Account.findById(_id);
   if (!account) return res.status(403).json({ message: "Forbidden access" });
-
-  console.log("account auth", account);
 
   req.body.account = account;
   next();

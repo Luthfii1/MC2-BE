@@ -26,6 +26,21 @@ const accountSchema = new mongoose.Schema({
     required: true,
     enum: ["MALE", "FEMALE", "UNKNOWN"],
   },
+  loveLanguage: {
+    type: String,
+    required: false,
+    enum: [
+      "WORDS_OF_AFFIRMATION",
+      "ACTS_OF_SERVICE",
+      "RECEIVING_GIFTS",
+      "QUALITY_TIME",
+      "PHYSICAL_TOUCH",
+    ],
+  },
+  invitationCode: {
+    type: String,
+    required: false,
+  },
 });
 
 const Account = mongoose.model("Account", accountSchema);

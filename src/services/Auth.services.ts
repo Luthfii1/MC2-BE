@@ -28,6 +28,21 @@ exports.register = async function (body: any) {
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(password, salt);
 
+  // create unique invitation code for 4 characters
+  // check the invitationCode already exist or not with other accounts
+  let invitationCode = "";
+  let isExist = true;
+  while (isExist) {
+    invitationCode = Math.random().toString(36).substring(2, 6).toUpperCase();
+    const checkInvitationCode = await Account.findOne({
+      invitationCode: invitationCode,
+    });
+
+    if (!checkInvitationCode) {
+      isExist = false;
+    }
+  }
+
   if (partnerID) {
     const checkPartner = await Account.findOne({ _id: partnerID });
 
@@ -45,6 +60,7 @@ exports.register = async function (body: any) {
     email,
     password: hashedPassword,
     gender,
+    invitationCode,
     partnerID,
   });
 
@@ -55,7 +71,7 @@ exports.register = async function (body: any) {
     await Account.updateOne({ _id: partnerID }, { partnerID: newAccount._id });
   }
 
-  return await Account.find({});
+  return await Account.findOne({ _id: newAccount._id });
 };
 
 exports.login = async function (body: any) {
