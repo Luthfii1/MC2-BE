@@ -62,19 +62,20 @@ exports.updateAccount = async function (body: any, params: any) {
   return updateAccount;
 };
 
-exports.getAccount = async function (params: any) {
-  const { id } = params;
+exports.getAccount = async function (body: any) {
+  // const { id } = params;
 
-  if (!id) {
-    throw new Error("ID is missing");
-  }
+  // if (!id) {
+  //   throw new Error("ID is missing");
+  // }
 
-  const accountData = await Account.findById(id);
-  if (!accountData) {
-    throw new Error("Account not found");
-  }
+  // const accountData = await Account.findById(id);
+  // if (!accountData) {
+  //   throw new Error("Account not found");
+  // }
 
-  return accountData;
+  return body;
+  
 };
 
 exports.removeAccount = async function (params: any) {

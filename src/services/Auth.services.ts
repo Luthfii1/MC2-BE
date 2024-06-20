@@ -83,5 +83,7 @@ exports.login = async function (body: any) {
     throw new Error("Token is not generated, please relogin");
   }
 
+  
+
   return token;
 };
