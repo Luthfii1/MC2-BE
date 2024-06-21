@@ -107,3 +107,31 @@ exports.getValidatingQuest = async function (params: any) {
 };
 
 exports.getQuest;
+
+exports.getAllQuestsByMonth = async function (params: any, body: any) {
+  const { id } = params;
+  const { month, year } = body;
+
+  checkRequiredField(month, "Month");
+  checkRequiredField(year, "Year");
+
+  const account = await Account.findById(id);
+  if (!account) {
+    throw new Error("Can't find the account");
+  }
+
+  // Calculate the date range for the given month
+  const startDate = new Date(year, month - 1, 1); // Adjust month - 1 for 0-based index
+  const endDate = new Date(year, month, 1); // The first day of the next month
+
+  // get all logs by month at this year
+  const logs = await Log.find({
+    assignUser: account._id,
+    dateQuest: {
+      $gte: startDate,
+      $lt: endDate,
+    },
+  });
+
+  return logs;
+};
