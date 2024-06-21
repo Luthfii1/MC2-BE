@@ -8,6 +8,7 @@ const logSchema = new mongoose.Schema({
   dateQuest: {
     type: Date,
     required: true,
+    default: Date.now,
   },
   isCompleted: {
     type: Boolean,
@@ -22,6 +23,10 @@ const logSchema = new mongoose.Schema({
   description: {
     type: String,
     required: true,
+  },
+  rating: {
+    type: Number,
+    required: false,
   },
 });
 
