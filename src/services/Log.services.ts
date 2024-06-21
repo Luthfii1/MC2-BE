@@ -1,6 +1,6 @@
 const { Account } = require("../models/Account.models");
 const { Log } = require("../models/Log.model");
-import { log } from "console";
+import { error, log } from "console";
 import {
   checkRequiredField,
   checkDuplicateValue,
@@ -30,7 +30,9 @@ exports.uploadQuest = async function (params: any, body: any) {
 
 exports.updateQuest = async function (params: any, body: any) {
   const { id } = params;
-  const { type, description, assignUser, isCompleted } = body;
+  const { type, description, assignUser, isCompleted, rating, idQuest } = body;
+
+  var idLog = null;
 
   if (isCompleted) {
     // find log with the same day with today
@@ -52,6 +54,7 @@ exports.updateQuest = async function (params: any, body: any) {
         $lt: end,
       },
     });
+    idLog = log._id;
 
     if (!log) {
       throw new Error("No quest found today");
@@ -61,7 +64,46 @@ exports.updateQuest = async function (params: any, body: any) {
     await log.save();
   }
 
-  return log;
+  //   rating quest by partner
+  if (rating) {
+    // validate input
+    checkRequiredField(idQuest, "idQuest");
+    checkRequiredField(rating, "Rating");
+
+    // get partner id
+    const account = await Account.findById(id);
+    const partnerId = account.partner;
+
+    // find the log that has been completed and not rated
+    const log = await Log.findById(idQuest);
+    idLog = log._id;
+
+    if (!log) {
+      throw new Error("No quests found to be rated");
+    }
+
+    log.rating = rating;
+    await log.save();
+  }
+
+  return await Log.findById({ _id: idLog });
+};
+
+exports.getValidatingQuest = async function (params: any) {
+  const { id } = params;
+
+  const account = await Account.findById(id);
+  if (!account) {
+    throw new Error("Can't find the account");
+  }
+
+  const logs = await Log.find({
+    assignUser: account.partnerID,
+    isCompleted: true,
+    rating: { $exists: false },
+  });
+
+  return logs;
 };
 
 exports.getQuest;
