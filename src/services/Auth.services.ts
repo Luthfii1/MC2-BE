@@ -63,7 +63,7 @@ exports.register = async function (body: any) {
 
   const newAccount = new Account({
     name,
-    email: email.toLowerCase(),
+    email: setEmail,
     password: hashedPassword,
     gender,
     invitationCode,
