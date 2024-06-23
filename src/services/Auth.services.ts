@@ -22,7 +22,11 @@ exports.register = async function (body: any) {
   checkRequiredField(gender, "Gender");
 
   // check availablity name and email at database Accounts
-  checkDuplicateValue(email, "email", await Account.find({ email: email }));
+  checkDuplicateValue(
+    email,
+    "email",
+    await Account.find({ email: email.toLowerCase() })
+  );
 
   // hash password
   const salt = await bcrypt.genSalt(10);
