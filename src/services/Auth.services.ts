@@ -57,7 +57,7 @@ exports.register = async function (body: any) {
 
   const newAccount = new Account({
     name,
-    email,
+    email: email.toLowerCase(),
     password: hashedPassword,
     gender,
     invitationCode,
@@ -98,8 +98,6 @@ exports.login = async function (body: any) {
   if (!token) {
     throw new Error("Token is not generated, please relogin");
   }
-
-  
 
   return token;
 };
