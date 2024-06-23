@@ -1,6 +1,7 @@
 const { Account } = require("../models/Account.models");
 const { Log } = require("../models/Log.model");
 import { error, log } from "console";
+import { parseISO, format } from "date-fns";
 import {
   checkRequiredField,
   checkDuplicateValue,
@@ -102,6 +103,21 @@ exports.getValidatingQuest = async function (params: any) {
     isCompleted: true,
     rating: { $exists: false },
   });
+
+  // Format the dateQuest field
+  logs.forEach((log: any) => {
+    const date = new Date(log.dateQuest);
+    const options: Intl.DateTimeFormatOptions = {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    };
+    const dateFormating = date.toLocaleDateString("en-US", options);
+    log.dateFormat = dateFormating;
+  });
+
+  console.log("logs", logs);
 
   return logs;
 };

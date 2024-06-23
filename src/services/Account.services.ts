@@ -8,9 +8,6 @@ exports.updateAccount = async function (body: any, params: any) {
   const { id } = params;
   const { ...data } = body;
 
-  console.log("data", data);
-  console.log("data.inputCode", data.inputCode);
-
   checkRequiredField(id, "ID");
 
   const accountData = await Account.findById(id);
@@ -29,8 +26,6 @@ exports.updateAccount = async function (body: any, params: any) {
 
   // if change partnerID
   if (data.inputCode && data.inputCode !== accountData.invitationCode) {
-    console.log("masuk sini", data.inputCode);
-
     // if remove partner
     if (data.inputCode === null) {
       await Account.findByIdAndUpdate(
@@ -101,7 +96,6 @@ exports.getAccount = async function (body: any) {
   // }
 
   return body;
-  
 };
 
 exports.removeAccount = async function (params: any) {
