@@ -6,7 +6,7 @@ exports.uploadQuest = async function (req: Request, res: Response) {
   try {
     const result = await logServices.uploadQuest(req.params, req.body);
     res.status(200).json({
-      messages: "Success upload quest",
+      message: "Success upload quest",
       result: result,
     });
   } catch (error: any) {
@@ -18,7 +18,7 @@ exports.updateQuest = async function (req: Request, res: Response) {
   try {
     const result = await logServices.updateQuest(req.params, req.body);
     res.status(200).json({
-      messages: "Success update quest",
+      message: "Success update quest",
       result: result,
     });
   } catch (error: any) {
@@ -30,7 +30,7 @@ exports.getValidatingQuest = async function (req: Request, res: Response) {
   try {
     const result = await logServices.getValidatingQuest(req.params);
     res.status(200).json({
-      messages: "Success get all quests",
+      message: "Success get all quests",
       result: result,
     });
   } catch (error: any) {
@@ -42,7 +42,7 @@ exports.getAllQuestsByMonth = async function (req: Request, res: Response) {
   try {
     const result = await logServices.getAllQuestsByMonth(req.params, req.body);
     res.status(200).json({
-      messages: "Success get all quests by month",
+      message: "Success get all quests by month",
       result: result,
     });
   } catch (error: any) {
