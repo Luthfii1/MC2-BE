@@ -21,11 +21,13 @@ exports.register = async function (body: any) {
   checkRequiredField(password, "Password");
   checkRequiredField(gender, "Gender");
 
+  const setEmail = email.toLowerCase();
+
   // check availablity name and email at database Accounts
   checkDuplicateValue(
-    email,
+    setEmail,
     "email",
-    await Account.find({ email: email.toLowerCase() })
+    await Account.find({ email: setEmail })
   );
 
   // hash password
