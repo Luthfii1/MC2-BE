@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from "express";
-import accountsData from "../models/dummyData";
 const jwt = require("jsonwebtoken");
 const { Account } = require("../models/Account.models");
 
@@ -10,16 +9,22 @@ export const authenticateToken = async (
 ) => {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
-  if (token == null)
+  if (token == null) {
     return res.status(401).json({ message: "Unauthorized access" });
+  }
 
-  const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
-  const _id = decoded._id;
+  try {
+    const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
+    const _id = decoded._id;
 
-  //   const account = accountsData.find((account: any) => account._id === _id);
-  const account = await Account.findById(_id);
-  if (!account) return res.status(403).json({ message: "Forbidden access" });
+    const account = await Account.findById(_id);
+    if (!account) {
+      return res.status(403).json({ message: "Forbidden access" });
+    }
 
-  req.body.account = account;
-  next();
+    req.body.account = account;
+    next();
+  } catch (err) {
+    return res.status(403).json({ message: "Forbidden access" });
+  }
 };

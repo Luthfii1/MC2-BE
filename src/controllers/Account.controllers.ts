@@ -15,13 +15,19 @@ exports.updateAccount = async function (req: Request, res: Response) {
 };
 
 exports.getAccount = async function (req: Request, res: Response) {
+  console.log("before");
+
   try {
+    console.log("get in try");
+
     const result = await accountServices.getAccount(req.body);
     res.status(200).json({
       message: "Success get account",
-      result: result.account,
+      result: result,
     });
   } catch (error: any) {
+    console.log("error: ", error.message);
+
     res.status(500).json({ message: error.message });
   }
 };
