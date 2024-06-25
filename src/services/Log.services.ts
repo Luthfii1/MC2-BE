@@ -151,3 +151,80 @@ exports.getAllQuestsByMonth = async function (params: any, body: any) {
 
   return logs;
 };
+
+// Define an interface for the achievements object
+interface Achievements {
+  [key: string]: "GOLD" | "SILVER" | "BRONZE" | "BROKE";
+}
+
+exports.getAchievements = async function (params: any) {
+  const { id } = params;
+
+  // Find the account by ID
+  const account = await Account.findById(id);
+  if (!account) {
+    throw new Error("Can't find the account");
+  }
+
+  // Get the current year
+  const today = new Date();
+  const year = today.getFullYear();
+
+  // Fetch logs for the current year
+  const logs = await Log.find({
+    assignUser: account._id,
+    dateQuest: {
+      $gte: new Date(year, 0, 1),
+      $lt: new Date(year + 1, 0, 1),
+    },
+  });
+
+  // Initialize achievements object and month names array
+  const achievements: Achievements = {};
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  // Loop through each month to calculate achievements
+  monthNames.forEach((month, index) => {
+    const startDate = new Date(year, index, 1);
+    const endDate = new Date(year, index + 1, 1);
+
+    // Filter logs for the specific month
+    const logsByMonth = logs.filter((log: any) => {
+      return log.dateQuest >= startDate && log.dateQuest < endDate;
+    });
+
+    const totalQuest = logsByMonth.length;
+    const totalCompleted = logsByMonth.filter(
+      (log: any) => log.isCompleted
+    ).length;
+
+    // Calculate the completion percentage
+    const percentage = totalQuest > 0 ? (totalCompleted / totalQuest) * 100 : 0;
+
+    // Determine the achievement level based on the percentage
+    if (percentage >= 75) {
+      achievements[month] = "GOLD";
+    } else if (percentage >= 50) {
+      achievements[month] = "SILVER";
+    } else if (percentage >= 25) {
+      achievements[month] = "BRONZE";
+    } else {
+      achievements[month] = "BROKE";
+    }
+  });
+
+  return achievements;
+};

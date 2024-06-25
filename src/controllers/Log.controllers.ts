@@ -49,3 +49,15 @@ exports.getAllQuestsByMonth = async function (req: Request, res: Response) {
     res.status(500).json({ message: error.message });
   }
 };
+
+exports.getAchievements = async function (req: Request, res: Response) {
+  try {
+    const result = await logServices.getAchievements(req.params);
+    res.status(200).json({
+      message: "Success get achievements",
+      result: result,
+    });
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+};

@@ -6,5 +6,6 @@ router.post("/uploadQuest/:id", LogController.uploadQuest);
 router.post("/updateQuest/:id", LogController.updateQuest);
 router.get("/getValidatingQuest/:id", LogController.getValidatingQuest);
 router.get("/getAllQuestsByMonth/:id", LogController.getAllQuestsByMonth);
+router.get("/getAchievements/:id", LogController.getAchievements);
 
 module.exports = router;
