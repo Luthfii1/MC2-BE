@@ -1,7 +1,6 @@
 const { Account } = require("../models/Account.models");
 const { Log } = require("../models/Log.model");
-import { error, log } from "console";
-import { parseISO, format } from "date-fns";
+import AchievementsInterface from "../models/Int.Achieve.model";
 import {
   checkRequiredField,
   checkDuplicateValue,
@@ -152,11 +151,6 @@ exports.getAllQuestsByMonth = async function (params: any, body: any) {
   return logs;
 };
 
-// Define an interface for the achievements object
-interface Achievements {
-  [key: string]: "GOLD" | "SILVER" | "BRONZE" | "BROKE";
-}
-
 exports.getAchievements = async function (params: any) {
   const { id } = params;
 
@@ -180,7 +174,7 @@ exports.getAchievements = async function (params: any) {
   });
 
   // Initialize achievements object and month names array
-  const achievements: Achievements = {};
+  const achievements: AchievementsInterface = {};
   const monthNames = [
     "January",
     "February",
