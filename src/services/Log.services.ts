@@ -222,5 +222,56 @@ exports.getAchievements = async function (params: any) {
     };
   });
 
-  return achievements;
+  const dummy = {
+    January: {
+      category: "GOLD",
+      quantity: 20,
+    },
+    February: {
+      category: "BROKE",
+      quantity: 12,
+    },
+    March: {
+      category: "GOLD",
+      quantity: 30,
+    },
+    April: {
+      category: "BRONZE",
+      quantity: 12,
+    },
+    May: {
+      category: "SILVER",
+      quantity: 21,
+    },
+    June: {
+      category: "SILVER",
+      quantity: 27,
+    },
+    July: {
+      category: "GOLD",
+      quantity: 30,
+    },
+    August: {
+      category: "BROKE",
+      quantity: 2,
+    },
+    September: {
+      category: "BROKE",
+      quantity: 8,
+    },
+    October: {
+      category: "SILVER",
+      quantity: 10,
+    },
+    November: {
+      category: "BROKE",
+      quantity: 26,
+    },
+    December: {
+      category: "BRONZE",
+      quantity: 17,
+    },
+  };
+
+  return dummy;
 };
