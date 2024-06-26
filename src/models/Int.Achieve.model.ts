@@ -1,6 +1,8 @@
-// Define an interface for the achievements object
 interface AchievementsInterface {
-  [key: string]: "GOLD" | "SILVER" | "BRONZE" | "BROKE";
+  [key: string]: {
+    category: "GOLD" | "SILVER" | "BRONZE" | "BROKE";
+    quantity: number;
+  };
 }
 
 export default AchievementsInterface;

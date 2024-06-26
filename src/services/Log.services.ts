@@ -121,8 +121,6 @@ exports.getValidatingQuest = async function (params: any) {
   return logs;
 };
 
-exports.getQuest;
-
 exports.getAllQuestsByMonth = async function (params: any, body: any) {
   const { id } = params;
   const { month, year } = body;
@@ -209,15 +207,19 @@ exports.getAchievements = async function (params: any) {
     const percentage = totalQuest > 0 ? (totalCompleted / totalQuest) * 100 : 0;
 
     // Determine the achievement level based on the percentage
+    let category: "GOLD" | "SILVER" | "BRONZE" | "BROKE" = "BROKE";
     if (percentage >= 75) {
-      achievements[month] = "GOLD";
+      category = "GOLD";
     } else if (percentage >= 50) {
-      achievements[month] = "SILVER";
+      category = "SILVER";
     } else if (percentage >= 25) {
-      achievements[month] = "BRONZE";
-    } else {
-      achievements[month] = "BROKE";
+      category = "BRONZE";
     }
+
+    achievements[month] = {
+      category: category,
+      quantity: totalQuest,
+    };
   });
 
   return achievements;
